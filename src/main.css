@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+:root, html {
+  touch-action: pan-x pan-y;
+  height: 100%
+}
+
+.draggable {
+  app-region: drag;
+  user-select: none;
+}
+
+.non-draggable {
+	app-region: no-drag;
+	user-select: unset;
+}
+
+@layer components {
+	.collapse-box {
+		@apply transition-none rounded-none md:rounded-box lg:collapse-open lg:flex-grow lg:hidden lg:[&:has(>input:checked)]:grid [&:has(>input:checked)]:flex-grow max-h-[calc(100vh-theme(space.40)-theme(space.8))] bg-base-300
+	}
+
+	.collapse-box-content {
+		@apply max-h-[calc(100vh-theme(space.64)-theme(space.2))] overflow-y-auto
+	}
+
+	.collapse-arrow > .collapse-title:after {
+	  top: 50%;
+	}
+}
