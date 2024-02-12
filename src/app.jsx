@@ -65,6 +65,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 	const inputVal = signal('')
 	const hexInputVal = signal(null)
 	const chatBox = signal()
+	const eventBox = signal()
 	const toaster = signal()
 	const toasterTop = signal()
 
@@ -76,6 +77,11 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 	const propsOpened = signal(true)
 	const eventsOpened = signal(true)
 	const chatOpened = signal(false)
+
+	const reducedAnimation = signal(false)
+
+	const eventAutoScroll = signal(false)
+	const chatAutoScroll = signal(false)
 
 	const themeSelected = signal('default')
 
@@ -102,22 +108,36 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 		inputVal.value = e.target.value
 	}
 
-	const addEvent = ({ timestamp, type, data }) => {
-		const eventData = { timestamp, type, data }
-		eventList.value.push(eventData)
-		eventList.trigger()
-	}
-
 	const scrollChatBox = () => {
 		if (chatBox.value && chatOpened.value) {
 			chatBox.value.scrollTo({
 				top: chatBox.value.scrollHeight,
-				behavior: 'smooth'
+				behavior: (reducedAnimation.value && 'instant') || 'smooth'
 			})
 			chatBox.value.scrollIntoViewIfNeeded({
 				block: 'end'
 			})
 		}
+	}
+
+	const scrollEventBox = () => {
+		if (eventAutoScroll.value && eventBox.value && eventsOpened.value) {
+			eventBox.value.scrollTo({
+				top: eventBox.value.scrollHeight,
+				behavior: (reducedAnimation.value && 'instant') || 'smooth'
+			})
+			eventBox.value.scrollIntoViewIfNeeded({
+				block: 'end'
+			})
+		}
+	}
+
+	const addEvent = ({ timestamp, type, data }) => {
+		const eventData = { timestamp, type, data }
+		eventList.value.push(eventData)
+		eventList.trigger()
+
+		if (eventAutoScroll.value) setTimeout(scrollEventBox, 0)
 	}
 
 	let msgCount = 0
@@ -135,7 +155,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 		messageList.value.push(messageData)
 		messageList.trigger()
 
-		setTimeout(scrollChatBox, 0)
+		if (chatAutoScroll.value) setTimeout(scrollChatBox, 0)
 
 		if (type === 'receive' && notificationEnabled.value) {
 			if (document.hasFocus() && toasterTop.value) {
@@ -221,10 +241,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 
 	const receiveListener = (body) => {
 		const { data, signal: signalStat } = body
-		const {
-			timestamp,
-			buffer
-		} = data
+		const { timestamp, buffer } = data
 		const dataPreview = getDataPreview(buffer)
 
 		addEvent({
@@ -530,6 +547,11 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 		eventsOpened,
 		chatOpened,
 
+		reducedAnimation,
+
+		eventAutoScroll,
+		chatAutoScroll,
+
 		themeSelected,
 
 		inputType,
@@ -550,10 +572,16 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 						<div class="md:hidden w-[env(titlebar-area-x,0px)] shrink-0 grow-0 transition-all" />
 						<div class="navbar-start mr-2">
 							<div class="join non-draggable">
-								<div class="btn btn-ghost flex flex-col items-start join-item tooltip tooltip-right" data-tip={version}>
+								<BtnSwitch
+									class="btn flex flex-col items-start join-item tooltip tooltip-right"
+									active="btn-info"
+									inactive="btn-ghost"
+									data-tip={version}
+									value={reducedAnimation}
+								>
 									<span>LoShark</span>
 									<span>Dashboard</span>
-								</div>
+								</BtnSwitch>
 								<a class="btn btn-ghost join-item" href="https://su.mk/store" target="_blank" rel="noopener noreferrer">
 									<span class="material-symbols-outlined">store</span>
 								</a>
@@ -615,7 +643,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 					{() => (
 						<div class="flex flex-col lg:flex-row relative w-full border-opacity-50 gap-4 flex-grow mb-4 before:content-[''] before:absolute before:-z-20 before:w-full before:h-full before:bg-contain before:bg-center before:bg-fixed before:bg-no-repeat before:bg-[url('/mask-icon.svg')] before:opacity-10 before:mix-blend-luminosity before:drop-shadow-[0_8px_8px_rgba(0,0,0,0.5)]">
 							<div class="collapse collapse-arrow collapse-box">
-								<CheckBox value={propsOpened} />
+								<CheckBox value={propsOpened} class="lg:hidden" />
 								<div class="collapse-title glass backdrop-filter-none flex items-center">
 									<span class="text-xl font-medium p-2">Props</span>
 									<div class="join ml-auto z-20">
@@ -719,32 +747,50 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 							</div>
 
 							<div class="collapse collapse-arrow collapse-box">
-								<CheckBox value={eventsOpened} />
+								<CheckBox value={eventsOpened} class="lg:hidden" />
 								<div class="collapse-title glass backdrop-filter-none flex items-center">
 									<span class="text-xl font-medium p-2">Events</span>
 									<div class="join ml-auto z-20">
 										<If condition={() => eventList.value.length}>
 											{() => (
-												<button class="btn tooltip tooltip-left" data-tip="Clear" on:click={clearEventList}>
-													<span class="material-symbols-outlined">mop</span>
-												</button>
+												<>
+													<BtnSwitch
+														class="btn tooltip tooltip-left join-item"
+														active="btn-info"
+														data-tip="Auto scroll"
+														value={eventAutoScroll}
+													>
+														<span class="material-symbols-outlined">app_promo</span>
+													</BtnSwitch>
+													<button class="btn tooltip tooltip-left join-item" data-tip="Clear" on:click={clearEventList}>
+														<span class="material-symbols-outlined">mop</span>
+													</button>
+												</>
 											)}
 											{() => (
-												<button class="btn invisible w-0 p-0 border-0">
+												<button class="btn tooltip tooltip-left invisible w-0 p-0 border-0">
 													<span class="material-symbols-outlined">mop</span>
 												</button>
 											)}
 										</If>
 									</div>
 								</div>
-								<EventList messages={eventList} />
+								<EventList messages={eventList} parentRef={eventBox} />
 							</div>
 
 							<div class="collapse collapse-arrow collapse-box">
-								<CheckBox value={chatOpened} />
+								<CheckBox value={chatOpened} class="lg:hidden" />
 								<div class="collapse-title glass backdrop-filter-none flex items-center">
 									<span class="text-xl font-medium p-2">Chat</span>
 									<div class="join ml-auto z-20">
+										<BtnSwitch
+											class="btn tooltip tooltip-left join-item"
+											active="btn-info"
+											data-tip="Auto scroll"
+											value={chatAutoScroll}
+										>
+											<span class="material-symbols-outlined">app_promo</span>
+										</BtnSwitch>
 										<BtnSwitch
 											class="btn tooltip tooltip-left join-item"
 											active="btn-info"

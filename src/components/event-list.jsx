@@ -2,8 +2,7 @@ import { signal, derivedExtract } from 'refui'
 import { ListView } from './list-view.jsx'
 import { usToLocaleTimeString } from '../utils.js'
 
-export const EventList = ({ messages }) => {
-	const parentRef = signal()
+export const EventList = ({ messages, parentRef }) => {
 	const listView = signal()
 
 	const { frontSpacerHeight, backSpacerHeight } = derivedExtract(listView, 'frontSpacerHeight', 'backSpacerHeight')
