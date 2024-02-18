@@ -1,4 +1,4 @@
-import { signal, For, If, $, onDispose, watch, peek, nextTick, onCondition, expose, untrack } from 'refui'
+import { signal, For, If, $, onDispose, watch, peek, nextTick, onCondition, expose, untrack, merge } from 'refui'
 import { USBSerial } from './usb.js'
 import { LoSharkAPIController } from './loshark.js'
 import { showModal } from './components/modal.jsx'
@@ -85,9 +85,26 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 
 	const themeSelected = signal('default')
 
+	let propMap = new Map()
+
 	const propList = signal([])
 	const eventList = signal([])
 	const messageList = signal([])
+
+	const inputDisabled = signal(false)
+	const sendDisabled = merge(
+		[inputType, inputVal, hexInputVal],
+		// eslint-disable-next-line max-params
+		(_inputType, _inputVal, _hexInputVal) => {
+			const maxLength = propMap.get('sx126x.lora.crc')?.value?.value ? 0xfd : 0xff
+			console.log(propMap.get('sx126x.lora.crc')?.value?.value, maxLength, _inputType, _inputVal.length, _hexInputVal?.byteLength)
+			if (_inputType === 'text') {
+				return _inputVal.length > maxLength
+			} else if (_inputType === 'hex') {
+				return !!(_hexInputVal && _hexInputVal.byteLength > maxLength)
+			}
+		}
+	)
 
 	const deviceTime = signal('')
 	const browserTime = signal('')
@@ -102,10 +119,12 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 
 	let timeDelta = 0
 
-	let propMap = new Map()
-
 	const handleInput = (e) => {
 		inputVal.value = e.target.value
+	}
+
+	const handleHexInput = (val) => {
+		hexInputVal.value = val
 	}
 
 	const scrollChatBox = () => {
@@ -318,10 +337,8 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 		}
 	}
 
-	const inputDisabled = signal(false)
-
 	const transmitMessage = async () => {
-		if (inputDisabled.value) return
+		if (inputDisabled.value || sendDisabled.value) return
 
 		let messageBuffer = null
 
@@ -440,6 +457,8 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 					propList.trigger()
 				}
 			}
+
+			sendDisabled.set()
 		} else {
 			propListArr.length = 0
 			propList.trigger()
@@ -459,6 +478,10 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 				const { value } = await lsAPI.apiGetProp(key)
 				prop.value.value = value
 				prop.value.trigger()
+
+				if (key === 'sx126x.lora.crc') {
+					sendDisabled.set()
+				}
 			}
 		}
 	}
@@ -478,6 +501,16 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 		}
 	}
 
+	const popReducedAnimationMessage = () => {
+		const _toaster = toaster.value
+		const _reducedAnimation = reducedAnimation.value
+		if (_toaster) {
+			if (_reducedAnimation) {
+				_toaster.show('Reduced animation enabled.', 1000)
+			}
+		}
+	}
+
 	const setThemeColor = () => {
 		// eslint-disable-next-line newline-per-chained-call
 		const themeColor = document.documentElement.computedStyleMap().get('background-color').toString()
@@ -491,9 +524,14 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 		eventList.value = []
 	}
 
+	const clearMessageList = () => {
+		messageList.value = []
+	}
+
 	watch(refreshTime)
 	watch(refreshProps)
 	watch(checkNotification)
+	watch(popReducedAnimationMessage)
 
 	watch(() => {
 		if (showNeedRefresh.value) {
@@ -751,28 +789,17 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 								<div class="collapse-title glass backdrop-filter-none flex items-center">
 									<span class="text-xl font-medium p-2">Events</span>
 									<div class="join ml-auto z-20">
-										<If condition={() => eventList.value.length}>
-											{() => (
-												<>
-													<BtnSwitch
-														class="btn tooltip tooltip-left join-item"
-														active="btn-info"
-														data-tip="Auto scroll"
-														value={eventAutoScroll}
-													>
-														<span class="material-symbols-outlined">app_promo</span>
-													</BtnSwitch>
-													<button class="btn tooltip tooltip-left join-item" data-tip="Clear" on:click={clearEventList}>
-														<span class="material-symbols-outlined">mop</span>
-													</button>
-												</>
-											)}
-											{() => (
-												<button class="btn tooltip tooltip-left invisible w-0 p-0 border-0">
-													<span class="material-symbols-outlined">mop</span>
-												</button>
-											)}
-										</If>
+										<BtnSwitch
+											class="btn tooltip tooltip-left join-item"
+											active="btn-info"
+											data-tip="Auto scroll"
+											value={eventAutoScroll}
+										>
+											<span class="material-symbols-outlined">app_promo</span>
+										</BtnSwitch>
+										<button class="btn tooltip tooltip-left join-item" data-tip="Clear" on:click={clearEventList}>
+											<span class="material-symbols-outlined">mop</span>
+										</button>
 									</div>
 								</div>
 								<EventList messages={eventList} parentRef={eventBox} />
@@ -807,6 +834,9 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 										>
 											<span class="material-symbols-outlined">notifications</span>
 										</BtnSwitch>
+										<button class="btn tooltip tooltip-left join-item" data-tip="Clear" on:click={clearMessageList}>
+											<span class="material-symbols-outlined">mop</span>
+										</button>
 									</div>
 								</div>
 								<ChatList messages={messageList} parentRef={chatBox}>
@@ -848,9 +878,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 															return (
 																<HexInput
 																	class="input invalid:input-error w-full font-mono join-item"
-																	onChange={(val) => {
-																		hexInputVal.value = val
-																	}}
+																	onChange={handleHexInput}
 																	on:keypress={handleKey}
 																	$ref={inputBox}
 																/>
@@ -858,8 +886,14 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 														}}
 													</If>
 
-													<button class="btn join-item" disabled={inputDisabled} on:click={transmitMessage}>
-														<span class="material-symbols-outlined">send</span>
+													<button
+														class="btn join-item"
+														disabled={inputDisabled.or(sendDisabled)}
+														on:click={transmitMessage}
+													>
+														<span class="material-symbols-outlined">
+															{$(() => (sendDisabled.value && 'backspace') || 'send')}
+														</span>
 													</button>
 												</div>
 											)
