@@ -19,7 +19,7 @@ export const ChatList = ({ messages, parentRef = signal() }, ...children) => {
 				$ref={parentRef}
 				on-passive:scroll={handleScroll}
 			>
-				<div class="flex-grow-0 flex-shrink-0" style:height={() => `${frontSpacerHeight}px`} />
+				<div class="grow-0 shrink-0" style:height={() => `${frontSpacerHeight}px`} />
 				<ListView tracked preload entries={messages} overscan={5} itemHeight={108} parentRef={parentRef} $ref={listView}>
 					{(props, idx, { reportHeight, preloading = false }) => {
 						const { buffer, type, timestamp, signalStat, status, showHexDump } = derivedExtract(props)
@@ -95,7 +95,7 @@ export const ChatList = ({ messages, parentRef = signal() }, ...children) => {
 						)
 					}}
 				</ListView>
-				<div class="flex-grow-0 flex-shrink-0" style:height={() => `${backSpacerHeight}px`} />
+				<div class="grow-0 shrink-0" style:height={() => `${backSpacerHeight}px`} />
 				{...children}
 			</div>
 		)

@@ -137,7 +137,7 @@ export const PropVal = ({ prop, setProp }) => {
 							return (
 								<div class="flex items-center">
 									<span class="label-text min-w-4 mr-2 text-center">{displayValue}</span>
-									<div class="form-control flex-grow">
+									<div class="form-control grow">
 										<label class="label cursor-pointer">
 											<input
 												type="range"

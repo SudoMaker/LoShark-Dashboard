@@ -1,40 +1,65 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-.material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 1,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
 
-:root, html {
-  touch-action: pan-x pan-y;
-  height: 100%
+@utility collapse-box {
+  @apply transition-none rounded-none md:rounded-box lg:collapse-open lg:flex-grow lg:hidden lg:[&:has(>input:checked)]:grid [&:has(>input:checked)]:flex-grow max-h-[calc(100vh-theme(space.40)-theme(space.8))] bg-base-300;
 }
 
-.draggable {
-  app-region: drag;
-  user-select: none;
+@utility collapse-box-content {
+  @apply max-h-[calc(100vh-theme(space.64)-theme(space.2))] overflow-y-auto;
 }
 
-.non-draggable {
-	app-region: no-drag;
-	user-select: unset;
+@utility collapse-arrow {
+  & > .collapse-title:after {
+    top: 50%;
+  }
 }
 
-@layer components {
-	.collapse-box {
-		@apply transition-none rounded-none md:rounded-box lg:collapse-open lg:flex-grow lg:hidden lg:[&:has(>input:checked)]:grid [&:has(>input:checked)]:flex-grow max-h-[calc(100vh-theme(space.40)-theme(space.8))] bg-base-300
-	}
+@utility collapse-title {
+  .collapse-arrow > &:after {
+    top: 50%;
+  }
+}
 
-	.collapse-box-content {
-		@apply max-h-[calc(100vh-theme(space.64)-theme(space.2))] overflow-y-auto
-	}
+@layer utilities {
+  .material-symbols-outlined {
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+  }
 
-	.collapse-arrow > .collapse-title:after {
-	  top: 50%;
-	}
+  :root,
+  html {
+    touch-action: pan-x pan-y;
+    height: 100%;
+  }
+
+  .draggable {
+    app-region: drag;
+    user-select: none;
+  }
+
+  .non-draggable {
+    app-region: no-drag;
+    user-select: unset;
+  }
 }

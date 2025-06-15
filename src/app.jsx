@@ -606,7 +606,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 			<div class="flex flex-col md:p-4 h-screen w-screen overflow-y-auto">
 				<div class="flex sticky top-0 z-50">
 					<div class="hidden md:block w-[env(titlebar-area-x,0px)] shrink-0 grow-0 transition-all" />
-					<div class="navbar flex-grow overflow-x-auto bg-base-300 md:rounded-box shadow-xl shadow-sky-300/10 min-h-[theme(space.16)] mb-4 draggable">
+					<div class="navbar grow overflow-x-auto bg-base-300 md:rounded-box shadow-xl shadow-sky-300/10 min-h-16 mb-4 draggable">
 						<div class="md:hidden w-[env(titlebar-area-x,0px)] shrink-0 grow-0 transition-all" />
 						<div class="navbar-start mr-2">
 							<div class="join non-draggable">
@@ -679,7 +679,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 
 				<If condition={webUSBSupported}>
 					{() => (
-						<div class="flex flex-col lg:flex-row relative w-full border-opacity-50 gap-4 flex-grow mb-4 before:content-[''] before:absolute before:-z-20 before:w-full before:h-full before:bg-contain before:bg-center before:bg-fixed before:bg-no-repeat before:bg-[url('/mask-icon.svg')] before:opacity-10 before:mix-blend-luminosity before:drop-shadow-[0_8px_8px_rgba(0,0,0,0.5)]">
+						<div class="flex flex-col lg:flex-row relative w-full border-opacity-50 gap-4 grow mb-4 before:content-[''] before:absolute before:-z-20 before:w-full before:h-full before:bg-contain before:bg-center before:bg-fixed before:bg-no-repeat before:bg-[url('/mask-icon.svg')] before:opacity-10 before:mix-blend-luminosity before:drop-shadow-[0_8px_8px_rgba(0,0,0,0.5)]">
 							<div class="collapse collapse-arrow collapse-box">
 								<CheckBox value={propsOpened} class="lg:hidden" />
 								<div class="collapse-title glass backdrop-filter-none flex items-center">
@@ -918,7 +918,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 					)}
 				</If>
 
-				<footer class="footer items-center grid-flow-col mt-auto md:rounded-box min-h-[theme(space.16)] p-4 bg-base-300 text-base-content">
+				<footer class="footer items-center grid-flow-col mt-auto md:rounded-box min-h-16 p-4 bg-base-300 text-base-content">
 					<aside class="justify-self-start">
 						<p>Copyright © {new Date().getFullYear()} SudoMaker, Ltd.</p>
 					</aside>
