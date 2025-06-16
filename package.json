@@ -1,7 +1,7 @@
 {
   "name": "loshark-dashboard",
   "private": true,
-  "version": "0.1.7-beta.1",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.27.5",
     "@babel/preset-react": "^7.27.1",
-    "@tailwindcss/postcss": "^4.1.10",
+    "@tailwindcss/vite": "^4.1.10",
     "@vite-pwa/assets-generator": "^1.0.0",
     "autoprefixer": "^10.4.21",
     "daisyui": "^5.0.43",

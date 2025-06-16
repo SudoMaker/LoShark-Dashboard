@@ -2,7 +2,7 @@
 @import 'tailwindcss';
 @plugin 'daisyui' {
 	themes: all;
-};
+}
 
 @utility collapse-box {
   @apply transition-none rounded-none md:rounded-box lg:collapse-open lg:flex-grow lg:hidden lg:[&:has(>input:checked)]:grid [&:has(>input:checked)]:flex-grow max-h-[calc(100vh-theme(space.40)-theme(space.8))] bg-base-300;

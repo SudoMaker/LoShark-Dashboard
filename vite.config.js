@@ -1,6 +1,7 @@
 // vite.config.js
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import tailwindcss from '@tailwindcss/vite'
 
 import packageJson from './package.json'
 
@@ -13,6 +14,7 @@ export default defineConfig({
 		__DASHBOARD_VERSION__: JSON.stringify(packageJson.version)
 	},
 	plugins: [
+		tailwindcss(),
 		VitePWA({
 			strategies: 'injectManifest',
 			srcDir: 'src',
