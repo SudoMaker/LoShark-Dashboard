@@ -50,7 +50,10 @@ const themes = {
 	winter: 'Winter',
 	dim: 'Dim',
 	nord: 'Nord',
-	sunset: 'Sunset'
+	sunset: 'Sunset',
+	caramellatte: 'Caramellatte',
+	abyss: 'Abyss',
+	silk: 'Silk'
 }
 
 export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, installPrompt }) => {
@@ -611,7 +614,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 						<div class="navbar-start mr-2">
 							<div class="join non-draggable">
 								<BtnSwitch
-									class="btn flex flex-col items-start join-item tooltip tooltip-right"
+									class="btn min-h-12 flex flex-col items-start join-item tooltip tooltip-right leading-none"
 									active="btn-info"
 									inactive="btn-ghost"
 									data-tip={version}
@@ -620,7 +623,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 									<span>LoShark</span>
 									<span>Dashboard</span>
 								</BtnSwitch>
-								<a class="btn btn-ghost join-item" href="https://su.mk/store" target="_blank" rel="noopener noreferrer">
+								<a class="btn min-h-12 btn-ghost join-item" href="https://su.mk/store" target="_blank" rel="noopener noreferrer">
 									<span class="material-symbols-outlined">store</span>
 								</a>
 							</div>
@@ -629,13 +632,13 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 							<If condition={webUSBSupported}>
 								{() => (
 									<div class="join hidden lg:block non-draggable">
-										<BtnSwitch class="btn join-item" active="btn-info" value={propsOpened}>
+										<BtnSwitch class="btn min-h-12 join-item" active="btn-info" value={propsOpened}>
 											Props
 										</BtnSwitch>
-										<BtnSwitch class="btn join-item" active="btn-info" value={eventsOpened}>
+										<BtnSwitch class="btn min-h-12 join-item" active="btn-info" value={eventsOpened}>
 											Events
 										</BtnSwitch>
-										<BtnSwitch class="btn join-item" active="btn-info" value={chatOpened}>
+										<BtnSwitch class="btn min-h-12 join-item" active="btn-info" value={chatOpened}>
 											Chat
 										</BtnSwitch>
 									</div>
@@ -648,7 +651,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 									{() => {
 										return (
 											<BtnSwitch
-												class="btn tooltip tooltip-left join-item"
+												class="btn min-h-12 tooltip tooltip-left join-item"
 												active="btn-success"
 												value={signal(modemOpened)}
 												data-tip="Modem Power"
@@ -660,7 +663,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 									}}
 								</If>
 								<BtnSwitch
-									class="btn tooltip tooltip-left join-item"
+									class="btn min-h-12 tooltip tooltip-left join-item"
 									active="btn-success"
 									inactive="btn-info"
 									disabled={!webUSBSupported}
@@ -680,7 +683,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 				<If condition={webUSBSupported}>
 					{() => (
 						<div class="flex flex-col lg:flex-row relative w-full border-opacity-50 gap-4 grow mb-4 before:content-[''] before:absolute before:-z-20 before:w-full before:h-full before:bg-contain before:bg-center before:bg-fixed before:bg-no-repeat before:bg-[url('/mask-icon.svg')] before:opacity-10 before:mix-blend-luminosity before:drop-shadow-[0_8px_8px_rgba(0,0,0,0.5)]">
-							<div class="collapse collapse-arrow collapse-box">
+							<div class="collapse collapse-box">
 								<CheckBox value={propsOpened} class="lg:hidden" />
 								<div class="collapse-title glass backdrop-filter-none flex items-center">
 									<span class="text-xl font-medium p-2">Props</span>
@@ -784,7 +787,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 								</div>
 							</div>
 
-							<div class="collapse collapse-arrow collapse-box">
+							<div class="collapse collapse-box">
 								<CheckBox value={eventsOpened} class="lg:hidden" />
 								<div class="collapse-title glass backdrop-filter-none flex items-center">
 									<span class="text-xl font-medium p-2">Events</span>
@@ -805,7 +808,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 								<EventList messages={eventList} parentRef={eventBox} />
 							</div>
 
-							<div class="collapse collapse-arrow collapse-box">
+							<div class="collapse collapse-box">
 								<CheckBox value={chatOpened} class="lg:hidden" />
 								<div class="collapse-title glass backdrop-filter-none flex items-center">
 									<span class="text-xl font-medium p-2">Chat</span>
@@ -846,7 +849,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 											return (
 												<div class="join z-20 w-full sticky bottom-0 mt-auto pt-4">
 													<select
-														class="select join-item"
+														class="select join-item w-auto"
 														value={inputType}
 														disabled={inputDisabled}
 														on:change={(e) => {
@@ -972,8 +975,8 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 					</div>
 				</footer>
 
-				<Toaster class="toast-start z-50" $ref={toaster} />
-				<Toaster class="toast-start toast-top z-50 mt-[env(titlebar-area-height,0px)]" $ref={toasterTop} />
+				<Toaster class="toast toast-start toast-bottom z-50" $ref={toaster} />
+				<Toaster class="toast toast-start toast-top z-50 mt-[env(titlebar-area-height,0px)]" $ref={toasterTop} />
 			</div>
 		)
 	}

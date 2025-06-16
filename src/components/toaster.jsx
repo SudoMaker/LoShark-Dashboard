@@ -66,7 +66,7 @@ export const Toaster = ({ class: className, ...props }) => {
 		return (
 			<If condition={() => toasts.value.length}>
 				{() => (
-					<div class={() => `toast${(className && ` ${className}`) || ''}`} {...props}>
+					<div class={className} {...props}>
 						<For entries={toasts}>{(_) => _(R)}</For>
 					</div>
 				)}

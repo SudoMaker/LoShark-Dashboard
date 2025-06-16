@@ -64,9 +64,10 @@ export const ChatList = ({ messages, parentRef = signal() }, ...children) => {
 									</label>
 								</div>
 								<div
-									class="chat-bubble chat-bubble-warning overflow-auto before:content-none"
+									class="chat-bubble chat-bubble-warning chat-bubble-info overflow-auto before:content-none"
 									{...{
 										'class:chat-bubble-warning': status.eq('Error'),
+										'class:chat-bubble-info': status.neq('Error'),
 										'class:overflow-auto': showHexDump,
 										'class:before:content-none': showHexDump
 									}}

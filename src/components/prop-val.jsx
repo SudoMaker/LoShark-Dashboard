@@ -76,7 +76,7 @@ export const PropVal = ({ prop, setProp }) => {
 					return (R) => {
 						return (
 							<div class="form-control">
-								<label class="label cursor-pointer">
+								<label class="label cursor-pointer w-full justify-between">
 									<span class="label-text">{value}</span>
 									<input
 										type="checkbox"
@@ -137,7 +137,7 @@ export const PropVal = ({ prop, setProp }) => {
 							return (
 								<div class="flex items-center">
 									<span class="label-text min-w-4 mr-2 text-center">{displayValue}</span>
-									<div class="form-control grow">
+									<div class="form-control grow flex flex-col">
 										<label class="label cursor-pointer">
 											<input
 												type="range"
@@ -151,7 +151,7 @@ export const PropVal = ({ prop, setProp }) => {
 												on:input={flushDisplay}
 											/>
 										</label>
-										<label class="label">
+										<label class="label justify-between">
 											<span class="label-text-alt">Min: {min ?? '-'}</span>
 											<span class="label-text-alt">Max: {max ?? '-'}</span>
 										</label>
