@@ -12,8 +12,8 @@ importers:
         specifier: ^1.11.4
         version: 1.11.4
       refui:
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.2.1
+        version: 0.2.1
       ucobs:
         specifier: ^1.0.0
         version: 1.0.0
@@ -2254,8 +2254,8 @@ packages:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
     engines: {node: '>= 0.4'}
 
-  refui@0.2.0:
-    resolution: {integrity: sha512-zVUKFHH2ZgVrM9IbqZa2bwSK4wLvnnHh1j1jU9tNE3yYMiMoZ8mWUznVYbIvUrGX4aKly+60MdIFAkNq8iZyOA==}
+  refui@0.2.1:
+    resolution: {integrity: sha512-jCOTXXmUBOcKH/ENsI6k4eZ00YNiDOXAC6c/Dgi3UdeFzYGIOOy5UH0FR4yJi5hl6w3rz9yw4i8vyMY1iaOfQg==}
 
   regenerate-unicode-properties@10.2.0:
     resolution: {integrity: sha512-DqHn3DwbmmPVzeKj9woBadqmXxLvQoQIwu7nopMc72ztvxVmVk2SBhSnx67zuye5TP+lJsb/TBQsjLKhnDf3MA==}
@@ -5008,7 +5008,7 @@ snapshots:
       get-proto: 1.0.1
       which-builtin-type: 1.2.1
 
-  refui@0.2.0: {}
+  refui@0.2.1: {}
 
   regenerate-unicode-properties@10.2.0:
     dependencies:
