@@ -151,7 +151,7 @@ export const PropVal = ({ prop, setProp }) => {
 												on:input={flushDisplay}
 											/>
 										</label>
-										<label class="label justify-between">
+										<label class="label w-full justify-between">
 											<span class="label-text-alt">Min: {min ?? '-'}</span>
 											<span class="label-text-alt">Max: {max ?? '-'}</span>
 										</label>
@@ -198,7 +198,7 @@ export const PropVal = ({ prop, setProp }) => {
 									onChange={onChange}
 								/>
 								{((typeof min !== 'undefined' || typeof max !== 'undefined') && (
-									<label class="label">
+									<label class="label w-full justify-between">
 										<span class="label-text-alt">
 											Min: {min} byte{(min === 1 && '') || 's'}
 										</span>
