@@ -4,6 +4,7 @@ export const BtnSwitch = ({ value = false, class: className, active, inactive, .
 	if (!props['on:click'] && isSignal(value)) props['on:click'] = () => {
 		value.value = !peek(value)
 	}
+
 	return (R) => {
 		return (
 			<button

@@ -12,8 +12,8 @@ importers:
         specifier: ^1.11.4
         version: 1.11.4
       refui:
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: ^0.4.0
+        version: 0.4.0
       ucobs:
         specifier: ^1.0.0
         version: 1.0.0
@@ -45,6 +45,9 @@ importers:
       globals:
         specifier: ^16.2.0
         version: 16.2.0
+      refurbish:
+        specifier: ^0.1.4
+        version: 0.1.4(refui@0.4.0)(rollup@2.79.2)
       tailwindcss:
         specifier: ^4.1.10
         version: 4.1.10
@@ -2254,8 +2257,13 @@ packages:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
     engines: {node: '>= 0.4'}
 
-  refui@0.2.1:
-    resolution: {integrity: sha512-jCOTXXmUBOcKH/ENsI6k4eZ00YNiDOXAC6c/Dgi3UdeFzYGIOOy5UH0FR4yJi5hl6w3rz9yw4i8vyMY1iaOfQg==}
+  refui@0.4.0:
+    resolution: {integrity: sha512-64i7uzdbMabCMcdLVRYgERXQagc66r0TVnmnruH7eTaJ48Z+EAx1+wD5xaq13B69qljppM5VNaLuZ/E2lAQqhQ==}
+
+  refurbish@0.1.4:
+    resolution: {integrity: sha512-9+wkIMPu6bEsmgOdOnOSaRB4jphIhecG52sIk4LpMExMRIFLJSy+Vg8TYOvnI9AxGU7W2CCjUtgq3cRqGO2BwA==}
+    peerDependencies:
+      refui: ^0.4.0
 
   regenerate-unicode-properties@10.2.0:
     resolution: {integrity: sha512-DqHn3DwbmmPVzeKj9woBadqmXxLvQoQIwu7nopMc72ztvxVmVk2SBhSnx67zuye5TP+lJsb/TBQsjLKhnDf3MA==}
@@ -5008,7 +5016,14 @@ snapshots:
       get-proto: 1.0.1
       which-builtin-type: 1.2.1
 
-  refui@0.2.1: {}
+  refui@0.4.0: {}
+
+  refurbish@0.1.4(refui@0.4.0)(rollup@2.79.2):
+    dependencies:
+      '@rollup/pluginutils': 5.2.0(rollup@2.79.2)
+      refui: 0.4.0
+    transitivePeerDependencies:
+      - rollup
 
   regenerate-unicode-properties@10.2.0:
     dependencies:

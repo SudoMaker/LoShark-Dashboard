@@ -1,6 +1,7 @@
 // vite.config.js
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import { refurbish } from 'refurbish'
 import tailwindcss from '@tailwindcss/vite'
 
 import packageJson from './package.json'
@@ -15,6 +16,7 @@ export default defineConfig({
 	},
 	plugins: [
 		tailwindcss(),
+		refurbish(),
 		VitePWA({
 			strategies: 'injectManifest',
 			srcDir: 'src',

@@ -1,4 +1,4 @@
-import { expose, signal, If, For, t } from 'refui'
+import { expose, signal, If, For, t, onDispose } from 'refui'
 
 export const Toaster = ({ class: className, ...props }) => {
 	const toastsArr = []
@@ -67,7 +67,7 @@ export const Toaster = ({ class: className, ...props }) => {
 			<If condition={() => toasts.value.length}>
 				{() => (
 					<div class={className} {...props}>
-						<For entries={toasts}>{(_) => _(R)}</For>
+						<For entries={toasts}>{({ item }) => item(R)}</For>
 					</div>
 				)}
 			</If>

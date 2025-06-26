@@ -21,7 +21,7 @@ export const ThemeChanger = ({ value = signal('default'), options = {default: 'D
 			</div>
 			<ul class="dropdown-content z-50 p-2 shadow-2xl bg-base-300 rounded-box w-52 max-h-60 overflow-auto" on-capture:change={onChange}>
 				<For entries={optionsArr} track="key">
-					{({ key, name }) => (
+					{({ item: { key, name } }) => (
 						<li>
 							<input
 								type="radio"

@@ -1,27 +1,51 @@
-import { signal, expose, dispose, getCurrentSelf } from 'refui'
+import { signal, isSignal, expose, onDispose, dispose, watch, peek, getCurrentSelf } from 'refui'
 import { render } from '../setup.js'
 
-export const Modal = ({ title = 'Alert', message, btnText = 'Close', onClose, removeOnClose }, children) => {
+export const Modal = ({ title = 'Alert', message, btnText = 'Close', onClose, removeOnClose, open }, children) => {
 	const self = getCurrentSelf()
 	const dialog = signal()
+
+	if (!isSignal(open)) {
+		open = signal(!!open)
+	}
+
+	let inited = false
+	watch(() => {
+		const dialogElement = dialog.value
+		const opened = open.value
+		const _onClose = peek(onClose)
+		if (dialogElement) {
+			if (opened) {
+				dialogElement.showModal()
+			} else {
+				dialogElement.close()
+			}
+		}
+	})
 
 	let removePending = false
 
 	const show = () => {
-		if (dialog.value) dialog.value.showModal()
+		open.value = true
 	}
+
 	const close = () => {
-		if (!dialog.value) return
-		dialog.value.close()
-		if (removeOnClose) {
-			removePending = true
-			dispose(self)
+		open.value = false
+		removePending = true
+	}
+
+	const remove = () => {
+		if (dialog.value) {
+			dialog.value.remove()
 		}
-		if (onClose) onClose()
+		peek(onClose)?.()
 	}
 
 	const onTransitionEnd = () => {
-		if (removePending) dialog.value.remove()
+		if (removePending) {
+			removePending = false
+			remove()
+		}
 	}
 
 	expose({
@@ -29,6 +53,8 @@ export const Modal = ({ title = 'Alert', message, btnText = 'Close', onClose, re
 		close,
 		dialog
 	})
+
+	inited = true
 
 	return (R) => (
 		<dialog id="my_modal_1" class="modal" on:close={close} on:transitionend={onTransitionEnd} $ref={dialog}>
@@ -48,6 +74,11 @@ export const Modal = ({ title = 'Alert', message, btnText = 'Close', onClose, re
 	)
 }
 
-export const showModal = (config, children) => {
-	render(document.body, Modal, { removeOnClose: true, ...config }, children).show()
+export const showModal = ({onClose: _onClose, ...config}, children) => {
+	const onClose = () => {
+		dispose(rendered)
+		if (_onClose) _onClose()
+	}
+
+	const rendered = render(document.body, Modal, { removeOnClose: true, open: signal(true), onClose, ...config }, children)
 }

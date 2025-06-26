@@ -8,7 +8,7 @@ export const EventList = ({ messages, parentRef }) => {
 	const { frontSpacerHeight, backSpacerHeight } = derivedExtract(listView, 'frontSpacerHeight', 'backSpacerHeight')
 
 	const handleScroll = () => {
-		if (listView.value) listView.value.handleScroll()
+		listView.value?.handleScroll()
 	}
 
 	return (R) => {
@@ -41,7 +41,7 @@ export const EventList = ({ messages, parentRef }) => {
 							parentRef={parentRef}
 							$ref={listView}
 						>
-							{(props, idx, { reportHeight, preloading = false }) => {
+							{({ item: props, index: idx, reportHeight, preloading = false }) => {
 								const { type, timestamp, data } = derivedExtract(props)
 								const dataText = signal(data, (i) => i || 'N/A')
 								const idxText = signal(idx, (i) => i + 1)

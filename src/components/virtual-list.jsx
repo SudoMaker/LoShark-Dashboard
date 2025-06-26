@@ -2,7 +2,7 @@ import { Fn, For, signal, read, peek, watch, onDispose, nextTick } from 'refui'
 
 export const VirtualList = (
 	{ entries, tracked, preload, visibleItems = 30, overscan = 10, debounce = 20, topItemIdx, onSelection },
-	itemRenderer
+	itemTemplate
 ) => {
 	const displayEntries = signal([])
 
@@ -78,6 +78,8 @@ export const VirtualList = (
 		update()
 	})
 
+	const Item = ({ item: [item, index] }) => itemTemplate({ item, index, preloading: false })
+
 	if (peek(preload)) {
 		let timeoutID = null
 
@@ -116,11 +118,11 @@ export const VirtualList = (
 			if (timeoutID) clearTimeout(timeoutID)
 		})
 
-		const preRender = () => itemRenderer(preloadItem, preloadIdx, true)
+		const preRender = () => itemTemplate({ item: preloadItem, index: preloadIdx, preloading: true })
 
 		return (R) => {
 			return <>
-				<For entries={displayEntries}>{([prop, idx]) => itemRenderer(prop, idx)}</For>
+				<For entries={displayEntries}>{Item}</For>
 				<Fn>{() => {
 					if (preloadItem.value) {
 						return preRender
@@ -131,6 +133,6 @@ export const VirtualList = (
 	}
 
 	return (R) => {
-		return <For entries={displayEntries}>{([prop, idx]) => itemRenderer(prop, idx)}</For>
+		return <For entries={displayEntries}>{Item}</For>
 	}
 }

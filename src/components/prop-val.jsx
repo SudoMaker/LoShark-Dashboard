@@ -52,7 +52,7 @@ export const PropVal = ({ prop, setProp }) => {
 					return (
 						<select class="select select-xs w-full" on:change={onChange} disabled={inputDisabled}>
 							<For entries={Object.entries(choices)}>
-								{([idx, choice]) => {
+								{({ item: [idx, choice] }) => {
 									return (
 										<option value={idx} selected={match(idx)}>
 											{choice}

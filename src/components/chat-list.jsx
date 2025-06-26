@@ -9,7 +9,7 @@ export const ChatList = ({ messages, parentRef = signal() }, ...children) => {
 	const { frontSpacerHeight, backSpacerHeight } = derivedExtract(listView, 'frontSpacerHeight', 'backSpacerHeight')
 
 	const handleScroll = () => {
-		if (listView.value) listView.value.handleScroll()
+		listView.value?.handleScroll()
 	}
 
 	return (R) => {
@@ -21,7 +21,7 @@ export const ChatList = ({ messages, parentRef = signal() }, ...children) => {
 			>
 				<div class="grow-0 shrink-0" style:height={() => `${frontSpacerHeight}px`} />
 				<ListView tracked preload entries={messages} overscan={5} itemHeight={108} parentRef={parentRef} $ref={listView}>
-					{(props, idx, { reportHeight, preloading = false }) => {
+					{({ item: props, index: idx, reportHeight, preloading = false }) => {
 						const { buffer, type, timestamp, signalStat, status, showHexDump } = derivedExtract(props)
 						const timeString = signal(timestamp, usToLocaleTimeString)
 						const isReceiveMsg = type.neq('send')

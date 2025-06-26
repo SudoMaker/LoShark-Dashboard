@@ -91,7 +91,7 @@ export const ListView = ({ entries, visibleItems = 10, itemHeight = 20, overscan
 				debounce={20}
 				{...props}
 			>
-				{(props, idx, preloading) => itemRenderer(props, idx, {reportHeight, preloading})}
+				{({ item, index, preloading }) => itemRenderer({ item, index, reportHeight, preloading })}
 			</VirtualList>
 		)
 	}

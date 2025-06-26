@@ -516,11 +516,12 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 
 	const setThemeColor = () => {
 		// eslint-disable-next-line newline-per-chained-call
-		const themeColor = document.documentElement.computedStyleMap().get('background-color').toString()
+		const themeColor = document.documentElement.computedStyleMap?.().get('background-color').toString()
 
-		const metaTag = document.querySelector('meta[name="theme-color"]')
-
-		metaTag.content = themeColor
+		if (themeColor) {
+			const metaTag = document.querySelector('meta[name="theme-color"]')
+			metaTag.content = themeColor
+		}
 	}
 
 	const clearEventList = () => {
@@ -749,7 +750,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 													<If condition={modemOpened}>
 														{() => (
 															<For entries={propList}>
-																{(prop) => {
+																{({ item: prop }) => {
 																	const { description, key } = prop
 																	return (
 																		<tr>
