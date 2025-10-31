@@ -3,12 +3,12 @@ import { ListView } from './list-view.jsx'
 import { usToLocaleTimeString } from '../utils.js'
 
 export const EventList = ({ messages, parentRef }) => {
-	const listView = signal()
+	const listViewMethods = signal()
 
-	const { frontSpacerHeight, backSpacerHeight } = derivedExtract(listView, 'frontSpacerHeight', 'backSpacerHeight')
+	const { frontSpacerHeight, backSpacerHeight } = derivedExtract(listViewMethods, 'frontSpacerHeight', 'backSpacerHeight')
 
 	const handleScroll = () => {
-		listView.value?.handleScroll()
+		listViewMethods.value?.handleScroll()
 	}
 
 	return (R) => {
@@ -39,7 +39,7 @@ export const EventList = ({ messages, parentRef }) => {
 							overscan={10}
 							itemHeight={41}
 							parentRef={parentRef}
-							$ref={listView}
+							expose={(m) => { listViewMethods.value = m }}
 						>
 							{({ item: props, index: idx, reportHeight, preloading = false }) => {
 								const { type, timestamp, data } = derivedExtract(props)

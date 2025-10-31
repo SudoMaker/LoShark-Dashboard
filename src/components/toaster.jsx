@@ -1,6 +1,6 @@
-import { expose, signal, If, For, t, onDispose } from 'refui'
+import { signal, If, For, t, onDispose } from 'refui'
 
-export const Toaster = ({ class: className, ...props }) => {
+export const Toaster = ({ class: className, expose, ...props }) => {
 	const toastsArr = []
 	const toasts = signal(toastsArr)
 
@@ -58,7 +58,7 @@ export const Toaster = ({ class: className, ...props }) => {
 		toasts.trigger()
 	}
 
-	expose({
+	expose?.({
 		show
 	})
 

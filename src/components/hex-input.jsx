@@ -1,6 +1,6 @@
-import { signal, expose, nextTick } from 'refui'
+import { signal, nextTick } from 'refui'
 
-export const HexInput = ({ value, onChange, ...props }) => {
+export const HexInput = ({ value, onChange, expose, ...props }) => {
 	const input = signal()
 
 	const strValue = signal(value, (val) => {
@@ -39,7 +39,7 @@ export const HexInput = ({ value, onChange, ...props }) => {
 		strValue.value = ''
 	}
 
-	expose({
+	expose?.({
 		focus,
 		clear
 	})

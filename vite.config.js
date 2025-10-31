@@ -9,7 +9,8 @@ import packageJson from './package.json'
 export default defineConfig({
 	esbuild: {
 		jsxFactory: 'R.c',
-		jsxFragment: 'R.f'
+		jsxFragment: 'R.f',
+    jsxInject: 'import { R } from "refui/reflow"'
 	},
 	define: {
 		__DASHBOARD_VERSION__: JSON.stringify(packageJson.version)

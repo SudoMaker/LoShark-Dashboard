@@ -5,11 +5,11 @@ import { CheckBox } from './switches.jsx'
 import { usToLocaleTimeString } from '../utils.js'
 
 export const ChatList = ({ messages, parentRef = signal() }, ...children) => {
-	const listView = signal()
-	const { frontSpacerHeight, backSpacerHeight } = derivedExtract(listView, 'frontSpacerHeight', 'backSpacerHeight')
+	const listViewMethods = signal()
+	const { frontSpacerHeight, backSpacerHeight } = derivedExtract(listViewMethods, 'frontSpacerHeight', 'backSpacerHeight')
 
 	const handleScroll = () => {
-		listView.value?.handleScroll()
+		listViewMethods.value?.handleScroll()
 	}
 
 	return (R) => {
@@ -20,7 +20,7 @@ export const ChatList = ({ messages, parentRef = signal() }, ...children) => {
 				on-passive:scroll={handleScroll}
 			>
 				<div class="grow-0 shrink-0" style:height={() => `${frontSpacerHeight}px`} />
-				<ListView tracked preload entries={messages} overscan={5} itemHeight={108} parentRef={parentRef} $ref={listView}>
+				<ListView tracked preload entries={messages} overscan={5} itemHeight={108} parentRef={parentRef} expose={(m) => { listViewMethods.value = m }}>
 					{({ item: props, index: idx, reportHeight, preloading = false }) => {
 						const { buffer, type, timestamp, signalStat, status, showHexDump } = derivedExtract(props)
 						const timeString = signal(timestamp, usToLocaleTimeString)

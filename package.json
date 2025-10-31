@@ -9,28 +9,28 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.27.5",
-    "@babel/preset-react": "^7.27.1",
-    "@tailwindcss/vite": "^4.1.10",
-    "@vite-pwa/assets-generator": "^1.0.0",
+    "@babel/eslint-parser": "^7.28.5",
+    "@babel/preset-react": "^7.28.5",
+    "@tailwindcss/vite": "^4.1.16",
+    "@vite-pwa/assets-generator": "^1.0.2",
     "autoprefixer": "^10.4.21",
-    "daisyui": "^5.0.43",
-    "eslint": "^9.29.0",
+    "daisyui": "^5.3.10",
+    "eslint": "^9.38.0",
     "eslint-plugin-react": "^7.37.5",
-    "globals": "^16.2.0",
-    "refurbish": "^0.1.4",
-    "tailwindcss": "^4.1.10",
-    "vite": "^6.3.5",
-    "vite-plugin-pwa": "^1.0.0",
+    "globals": "^16.4.0",
+    "refurbish": "^0.1.7",
+    "tailwindcss": "^4.1.16",
+    "vite": "^7.1.12",
+    "vite-plugin-pwa": "^1.1.0",
     "workbox-precaching": "^7.3.0",
     "workbox-routing": "^7.3.0",
     "workbox-strategies": "^7.3.0",
     "workbox-window": "^7.3.0"
   },
   "dependencies": {
-    "msgpackr": "^1.11.4",
-    "refui": "^0.4.0",
+    "msgpackr": "^1.11.5",
+    "refui": "^0.8.1",
     "ucobs": "^1.0.0"
   },
-  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
+  "packageManager": "pnpm@10.20.0"
 }

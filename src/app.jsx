@@ -1,4 +1,4 @@
-import { signal, For, If, $, onDispose, watch, peek, nextTick, onCondition, expose, untrack, merge } from 'refui'
+import { signal, For, If, $, onDispose, watch, peek, nextTick, onCondition, untrack, merge } from 'refui'
 import { USBSerial } from './usb.js'
 import { LoSharkAPIController } from './loshark.js'
 import { showModal } from './components/modal.jsx'
@@ -538,9 +538,11 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 	watch(popReducedAnimationMessage)
 
 	watch(() => {
-		if (showNeedRefresh.value) {
-			if (toaster.value) {
-				toaster.value.show((R) => {
+		const needRefreshShow = showNeedRefresh.value
+		const toaterMethods = toaster.value
+		if (needRefreshShow) {
+			if (toaterMethods) {
+				toaterMethods.show((R) => {
 					return (
 						<div class="alert alert-warning">
 							<span class="material-symbols-outlined">autorenew</span>
@@ -560,9 +562,11 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 	})
 
 	watch(() => {
-		if (showOfflineReady.value) {
-			if (toaster.value) {
-				toaster.value.show({
+		const offlineReadyShow = showOfflineReady.value
+		const toaterMethods = toaster.value
+		if (offlineReadyShow) {
+			if (toaterMethods) {
+				toaterMethods.show({
 					message: 'Offline access ready.',
 					type: 'alert-success'
 				})
@@ -598,11 +602,6 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 
 		inputType,
 		inputVal
-	})
-
-	expose({
-		lsAPI,
-		toaster
 	})
 
 	return (R) => {
@@ -884,7 +883,7 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 																	class="input invalid:input-error w-full font-mono join-item"
 																	onChange={handleHexInput}
 																	on:keypress={handleKey}
-																	$ref={inputBox}
+																	expose={(m) => {inputBox.value = m}}
 																/>
 															)
 														}}
@@ -976,8 +975,8 @@ export const App = ({ needRefresh, offlineReady, checkSWUpdate, updateSW, instal
 					</div>
 				</footer>
 
-				<Toaster class="toast toast-start toast-bottom z-50" $ref={toaster} />
-				<Toaster class="toast toast-start toast-top z-50 mt-[env(titlebar-area-height,0px)]" $ref={toasterTop} />
+				<Toaster class="toast toast-start toast-bottom z-50" expose={(m) => {toaster.value = m}} />
+				<Toaster class="toast toast-start toast-top z-50 mt-[env(titlebar-area-height,0px)]" expose={(m) => {toasterTop.value = m}} />
 			</div>
 		)
 	}

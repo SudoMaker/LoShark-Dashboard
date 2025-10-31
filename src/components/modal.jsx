@@ -1,7 +1,7 @@
-import { signal, isSignal, expose, onDispose, dispose, watch, peek, getCurrentSelf } from 'refui'
+import { signal, isSignal, onDispose, dispose, watch, peek, getCurrentSelf } from 'refui'
 import { render } from '../setup.js'
 
-export const Modal = ({ title = 'Alert', message, btnText = 'Close', onClose, removeOnClose, open }, children) => {
+export const Modal = ({ title = 'Alert', message, btnText = 'Close', onClose, removeOnClose, open, expose }, children) => {
 	const self = getCurrentSelf()
 	const dialog = signal()
 
@@ -48,7 +48,7 @@ export const Modal = ({ title = 'Alert', message, btnText = 'Close', onClose, re
 		}
 	}
 
-	expose({
+	expose?.({
 		show,
 		close,
 		dialog

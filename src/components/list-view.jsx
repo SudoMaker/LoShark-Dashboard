@@ -1,7 +1,7 @@
-import { signal, peek, read, watch, expose } from 'refui'
+import { signal, peek, read, watch } from 'refui'
 import { VirtualList } from './virtual-list.jsx'
 
-export const ListView = ({ entries, visibleItems = 10, itemHeight = 20, overscan = 3, parentRef, ...props }, itemRenderer) => {
+export const ListView = ({ entries, visibleItems = 10, itemHeight = 20, overscan = 3, parentRef, expose, ...props }, itemRenderer) => {
 	visibleItems = signal(visibleItems)
 
 	const frontSpacerHeight = signal(0)
@@ -74,7 +74,7 @@ export const ListView = ({ entries, visibleItems = 10, itemHeight = 20, overscan
 		heightArr[peek(idx)] = height
 	}
 
-	expose({
+	expose?.({
 		handleScroll,
 		frontSpacerHeight,
 		backSpacerHeight
